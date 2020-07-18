@@ -25,7 +25,9 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
+	workloadv1 "github.com/mugos/gameroom/api/v1"
 	"github.com/mugos/gameroom/controllers"
 	// +kubebuilder:scaffold:imports
 )
@@ -72,6 +74,15 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Gameroom")
 		os.Exit(1)
 	}
+	mgr.GetWebhookServer().Register("/mutate-v1-pod", &webhook.Admission{
+		Handler: &workloadv1.Handler{
+			Client: mgr.GetClient(),
+		},
+	})
+	// if err = (&workloadv1.Handler{}).SetupWebhookWithManager(mgr); err != nil {
+	// 	setupLog.Error(err, "unable to create webhook", "webhook", "Gameroom")
+	// 	os.Exit(1)
+	// }
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

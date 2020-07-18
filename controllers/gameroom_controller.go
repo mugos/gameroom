@@ -71,6 +71,7 @@ func (r *GameroomReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 
 // https://github.com/packyzbq/CRDSample/blob/master/controllers/demo_controller.go
 func (r *GameroomReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	mgr.GetWebhookServer()
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&corev1.Pod{}).
 		Complete(r)

@@ -35,7 +35,7 @@ type Handler struct {
 	decoder *admission.Decoder
 }
 
-// +kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=gameroom
+// +kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=gameroom.kb.io
 
 func (a *Handler) Handle(ctx context.Context, req admission.Request) admission.Response {
 	pod := &corev1.Pod{}

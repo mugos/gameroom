@@ -74,15 +74,14 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Gameroom")
 		os.Exit(1)
 	}
+
+	//
 	mgr.GetWebhookServer().Register("/mutate-v1-pod", &webhook.Admission{
 		Handler: &workloadv1.Handler{
 			Client: mgr.GetClient(),
 		},
 	})
-	// if err = (&workloadv1.Handler{}).SetupWebhookWithManager(mgr); err != nil {
-	// 	setupLog.Error(err, "unable to create webhook", "webhook", "Gameroom")
-	// 	os.Exit(1)
-	// }
+
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")
